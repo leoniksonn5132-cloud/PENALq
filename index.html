@@ -1,0 +1,265 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>VERSATIL RP - Código Penal</title>
+<style>
+body {
+  font-family: 'Segoe UI', sans-serif;
+  background-color: #f2f4f7;
+  margin: 0;
+  padding: 0;
+  color: #222;
+}
+header {
+  background-color: #002c5f;
+  color: white;
+  padding: 15px 25px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+header h1 {
+  font-size: 24px;
+  letter-spacing: 1px;
+}
+nav {
+  background-color: #01356f;
+  display: flex;
+  justify-content: center;
+  padding: 10px;
+}
+nav button {
+  background-color: #024aa7;
+  border: none;
+  color: white;
+  padding: 10px 20px;
+  margin: 0 5px;
+  cursor: pointer;
+  border-radius: 5px;
+  transition: 0.2s;
+}
+nav button.active, nav button:hover {
+  background-color: #0468d7;
+}
+.container {
+  max-width: 1100px;
+  margin: 30px auto;
+  background: white;
+  padding: 25px;
+  border-radius: 8px;
+  box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+}
+.search-box {
+  text-align: center;
+  margin-bottom: 20px;
+}
+.search-box input {
+  width: 80%;
+  padding: 12px;
+  font-size: 16px;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+}
+.crime {
+  border-left: 5px solid #ccc;
+  padding: 10px;
+  margin: 10px 0;
+  border-radius: 5px;
+}
+.gravissimo { border-color: #d32f2f; background: #ffeaea; }
+.grave { border-color: #f57c00; background: #fff1e0; }
+.medio { border-color: #1976d2; background: #e9f1ff; }
+.leve { border-color: #388e3c; background: #e7f7ea; }
+.artigo {
+  font-weight: bold;
+}
+footer {
+  background-color: #002c5f;
+  color: white;
+  text-align: center;
+  padding: 10px;
+  margin-top: 40px;
+}
+.hidden { display: none; }
+</style>
+</head>
+<body>
+
+<header>
+  <h1>VERSATIL RP - CÓDIGO PENAL</h1>
+</header>
+
+<nav>
+  <button id="btn-normais" class="active">Crimes Normais</button>
+  <button id="btn-policiais">Crimes Policiais</button>
+</nav>
+
+<div class="container">
+
+  <div class="search-box">
+    <input type="text" id="search" placeholder="Buscar artigo, crime ou nível...">
+  </div>
+
+  <div id="crimes-normais"></div>
+  <div id="crimes-policiais" class="hidden"></div>
+
+</div>
+
+<footer>
+  © 2025 VERSATIL RP — Todos os direitos reservados.
+</footer>
+
+<script>
+const crimes = {
+  normais: [
+    // --- CRIMES GRAVÍSSIMOS ---
+    {nivel:'Gravíssimo', artigo:'Art. 157 1', nome:'Roubo', pena:'15 SERVIÇOS'},
+    {nivel:'Gravíssimo', artigo:'Art. 157 5 II', nome:'Homicídio', pena:'25 SERVIÇOS'},
+    {nivel:'Gravíssimo', artigo:'Art. 157 6 II', nome:'Latrocínio', pena:'30 SERVIÇOS'},
+    {nivel:'Gravíssimo', artigo:'Art. 148°1 II', nome:'Extorsão mediante sequestro', pena:'25 SERVIÇOS'},
+    {nivel:'Gravíssimo', artigo:'Art. 157 °7 II', nome:'Roubo ao Nióbio / Galinheiro', pena:'20 SERVIÇOS'},
+    {nivel:'Gravíssimo', artigo:'Art. 157 °8 II', nome:'Roubo a loja de conveniência / armas', pena:'15 SERVIÇOS'},
+    {nivel:'Gravíssimo', artigo:'Art. 157 9 II', nome:'Roubo a residência', pena:'15 SERVIÇOS'},
+    {nivel:'Gravíssimo', artigo:'Art. 129°1 II', nome:'Tentativa de homicídio', pena:'10 SERVIÇOS'},
+    {nivel:'Gravíssimo', artigo:'Art. 92°1 IIII', nome:'Simulacro de arma', pena:'10 SERVIÇOS'},
+    {nivel:'Gravíssimo', artigo:'Art. 16 °1 IIII', nome:'Posse/Porte de Arma Restrita', pena:'30 SERVIÇOS'},
+    {nivel:'Gravíssimo', artigo:'Art. 148 IIIIII', nome:'Sequestro', pena:'20 SERVIÇOS'},
+    {nivel:'Gravíssimo', artigo:'Art. 351 IIIIII', nome:'Fuga da prisão / Resgate', pena:'15 SERVIÇOS'},
+    {nivel:'Gravíssimo', artigo:'Art. 171 IIIIII', nome:'Estelionato', pena:'20 SERVIÇOS'},
+    {nivel:'Gravíssimo', artigo:'Art. 59 II', nome:'Roubo a bancos', pena:'20 SERVIÇOS'},
+    {nivel:'Gravíssimo', artigo:'Art. 60 II', nome:'Roubo à joalheria', pena:'20 SERVIÇOS'},
+    {nivel:'Gravíssimo', artigo:'Art. 18', nome:'Tráfico de armas', pena:'20 SERVIÇOS'},
+    {nivel:'Gravíssimo', artigo:'Art. 16', nome:'Posse/Porte de arma de alto calibre', pena:'10 SERVIÇOS'},
+    {nivel:'Gravíssimo', artigo:'Art. 15 IIIIII', nome:'Posse/Porte ilegal de arma de baixo calibre', pena:'10 SERVIÇOS'},
+    {nivel:'Gravíssimo', artigo:'Art. 57', nome:'Posse/Porte ilegal de munições', pena:'15 SERVIÇOS'},
+    {nivel:'Gravíssimo', artigo:'Art. 33', nome:'Tráfico Internacional (fronteira aérea/marítima com grande quantidade)', pena:'25 SERVIÇOS'},
+
+    // --- CRIMES GRAVES ---
+    {nivel:'Grave', artigo:'Art. 167 14', nome:'Roubo a caixa eletrônico', pena:'10 SERVIÇOS OU FIANÇA: 4.000,00'},
+    {nivel:'Grave', artigo:'Art. 167 3', nome:'Roubo a caixa registradora', pena:'10 SERVIÇOS OU FIANÇA: 2.800,00'},
+    {nivel:'Grave', artigo:'Art. 167 2', nome:'Furto', pena:'10 SERVIÇOS OU FIANÇA: 8.000,00'},
+    {nivel:'Grave', artigo:'Art. 261 IIII', nome:'Posse/Porte de Explosivos', pena:'6 SERVIÇOS OU FIANÇA: 3.300,00'},
+    {nivel:'Grave', artigo:'Art. 334 III', nome:'Contrabando (Itens ilegais)', pena:'10 SERVIÇOS OU FIANÇA: 4.000,00'},
+    {nivel:'Grave', artigo:'Art. 128', nome:'Lesão corporal', pena:'10 SERVIÇOS OU FIANÇA: 4.000,00'},
+    {nivel:'Grave', artigo:'Art. 228 III', nome:'Associação criminosa', pena:'10 SERVIÇOS OU FIANÇA: 3.500,00'},
+    {nivel:'Grave', artigo:'Art. 368 III', nome:'Obstrução de justiça', pena:'16 SERVIÇOS OU FIANÇA: 6.000,00'},
+    {nivel:'Grave', artigo:'Art. 342 III', nome:'Falso testemunho', pena:'10 SERVIÇOS OU FIANÇA: 10.000,00'},
+    {nivel:'Grave', artigo:'Art. 158', nome:'Extorsão', pena:'10 SERVIÇOS OU FIANÇA: 6.200,00'},
+    {nivel:'Grave', artigo:'Art. 288 III', nome:'Falsificação de documentos', pena:'10 SERVIÇOS OU FIANÇA: 2.600,00'},
+    {nivel:'Grave', artigo:'Art. 288 III', nome:'Falsidade ideológica', pena:'10 SERVIÇOS OU FIANÇA: 4.000,00'},
+    {nivel:'Grave', artigo:'Art. 180 III', nome:'Receptação', pena:'10 SERVIÇOS OU FIANÇA: 6.000,00'},
+    {nivel:'Grave', artigo:'Art. 620 III', nome:'Multas pendentes', pena:'10 SERVIÇOS OU FIANÇA: 4.000,00'},
+    {nivel:'Grave', artigo:'Art. 55', nome:'Tráfico de drogas', pena:'10 SERVIÇOS OU FIANÇA: 4.200,00'},
+    {nivel:'Grave', artigo:'Art. 14', nome:'Mau uso de arma com porte', pena:'20 SERVIÇOS OU FIANÇA: 5.000,00'},
+
+    // --- CRIMES MÉDIOS ---
+    {nivel:'Médio', artigo:'Art. 331 IIII', nome:'Desacato', pena:'10 SERVIÇOS OU FIANÇA: 13.000,00'},
+    {nivel:'Médio', artigo:'Art. 333', nome:'Tentativa de suborno', pena:'16 SERVIÇOS OU FIANÇA: 8.000,00'},
+    {nivel:'Médio', artigo:'Art. 160', nome:'Invasão', pena:'10 SERVIÇOS OU FIANÇA: 3.300,00'},
+    {nivel:'Médio', artigo:'Art. 287', nome:'Apologia ao crime', pena:'6 SERVIÇOS OU FIANÇA: 8.100,00'},
+    {nivel:'Médio', artigo:'Art. 330', nome:'Desobediência', pena:'10 SERVIÇOS OU FIANÇA: 8.000,00'},
+    {nivel:'Médio', artigo:'Art. 147 III', nome:'Ameaça', pena:'16 SERVIÇOS OU FIANÇA: 7.000,00'},
+    {nivel:'Médio', artigo:'Art. 138 III', nome:'Calúnia, difamação e injúria', pena:'10 SERVIÇOS OU FIANÇA: 8.000,00'},
+    {nivel:'Médio', artigo:'Art. 238', nome:'Posse de dinheiro ilícito', pena:'6 SERVIÇOS OU FIANÇA: 2.000,00'},
+    {nivel:'Médio', artigo:'Art. 102 III', nome:'Fuga', pena:'10 SERVIÇOS OU FIANÇA: 2.500,00'},
+    {nivel:'Médio', artigo:'Art. 186 IIII', nome:'Dirigir sob efeito de álcool/drogas', pena:'10 SERVIÇOS OU FIANÇA: 4.600,00'},
+    {nivel:'Médio', artigo:'Art. 172 III', nome:'Racha / corrida ilegal', pena:'10 SERVIÇOS OU FIANÇA: 6.100,00'},
+    {nivel:'Médio', artigo:'Art. 251', nome:'Posse/Porte colete balístico', pena:'10 SERVIÇOS OU FIANÇA: 4.800,00'},
+    {nivel:'Médio', artigo:'Art. 02', nome:'Uso de maconha', pena:'10 SERVIÇOS OU FIANÇA: 4.000,00'},
+    {nivel:'Médio', artigo:'Art. 18', nome:'Porte de arma branca', pena:'10 SERVIÇOS OU FIANÇA: 6.600,00'},
+
+    // --- INFRAÇÕES LEVES ---
+    {nivel:'Leve', artigo:'Art. 108 II', nome:'Direção perigosa', pena:'MULTA: 8.600,00'},
+    {nivel:'Leve', artigo:'Art. 182', nome:'Sem habilitação', pena:'MULTA: 6.000,00'},
+    {nivel:'Leve', artigo:'Art. 244 IIII', nome:'Sem capacete', pena:'MULTA: 1.500,00'},
+    {nivel:'Leve', artigo:'Art. 172', nome:'Estacionar em local proibido', pena:'MULTA: 2.600,00'},
+    {nivel:'Leve', artigo:'Art. 68', nome:'Danos a terceiros', pena:'MULTA: 12.000,00'},
+    {nivel:'Leve', artigo:'Art. 54', nome:'Poluição sonora', pena:'MULTA: 8.800,00'},
+    {nivel:'Leve', artigo:'Art. 63', nome:'Pousar aeronaves em local proibido', pena:'MULTA: 14.000,00'},
+  ],
+
+  policiais: [
+    // --- CRIMES POLICIAIS GRAVÍSSIMOS ---
+    {nivel:'Gravíssimo', artigo:'Art. P188 II', nome:'Corrupção - Roubo/Desvio', pena:'PRISÃO PERPÉTUA'},
+    {nivel:'Gravíssimo', artigo:'Art. P189 II', nome:'Execução, Excesso de Força Letal', pena:'25 SERVIÇOS'},
+    {nivel:'Gravíssimo', artigo:'Art. P190 II', nome:'Fraude em ocorrência ou relatório', pena:'25 SERVIÇOS'},
+    {nivel:'Gravíssimo', artigo:'Art. P191 II', nome:'Conspiração', pena:'25 SERVIÇOS'},
+    {nivel:'Gravíssimo', artigo:'Art. P192 II', nome:'Vazamento de informações sigilosas', pena:'20 SERVIÇOS'},
+    {nivel:'Gravíssimo', artigo:'Art. P193 II', nome:'Corrupção Policial Ativa/Passiva', pena:'25 SERVIÇOS'},
+    {nivel:'Gravíssimo', artigo:'Art. P194 II', nome:'Descumprimento do POP', pena:'15 SERVIÇOS'},
+
+    // --- CRIMES POLICIAIS GRAVES ---
+    {nivel:'Grave', artigo:'Art. P196', nome:'Desobediência Hierárquica', pena:'16 SERVIÇOS OU FIANÇA: 8.000,00'},
+    {nivel:'Grave', artigo:'Art. P198', nome:'Uso indevido de viatura', pena:'10 SERVIÇOS OU FIANÇA: 7.800,00'},
+    {nivel:'Grave', artigo:'Art. P187 I', nome:'Desvio de função', pena:'16 SERVIÇOS OU FIANÇA: 8.000,00'},
+    {nivel:'Grave', artigo:'Art. P188', nome:'Relacionamento com presos/faccionados', pena:'15 SERVIÇOS OU FIANÇA: 8.300,00'},
+    {nivel:'Grave', artigo:'Art. P188', nome:'Falsidade ideológica', pena:'10 SERVIÇOS OU FIANÇA: 8.000,00'},
+    {nivel:'Grave', artigo:'Art. P200', nome:'Simular ocorrência', pena:'10 SERVIÇOS OU FIANÇA: 8.600,00'},
+    {nivel:'Grave', artigo:'Art. P201', nome:'Abuso de autoridade', pena:'16 SERVIÇOS OU FIANÇA: 8.600,00'},
+    {nivel:'Grave', artigo:'Art. P202', nome:'Perseguição pessoal', pena:'16 SERVIÇOS OU FIANÇA: 8.000,00'},
+    {nivel:'Grave', artigo:'Art. P200', nome:'Operação sem autorização/planejamento', pena:'10 SERVIÇOS OU FIANÇA: 10.000,00'},
+    {nivel:'Grave', artigo:'Art. P204', nome:'Violação de domicílio', pena:'10 SERVIÇOS OU FIANÇA: 8.200,00'},
+    {nivel:'Grave', artigo:'Art. P206', nome:'Não utilização do uso progressivo da força', pena:'10 SERVIÇOS OU FIANÇA: 8.800,00'},
+    {nivel:'Grave', artigo:'Art. P208', nome:'Porte/Posse de armas do estado fora de serviço', pena:'20 SERVIÇOS OU FIANÇA: 7.600,00'},
+
+    // --- CRIMES POLICIAIS MÉDIOS ---
+    {nivel:'Médio', artigo:'Art. P207', nome:'Não utilização de fardamento/uniforme correto', pena:'15 SERVIÇOS OU FIANÇA: 7.800,00'},
+    {nivel:'Médio', artigo:'Art. P208', nome:'Abandono de posto', pena:'10 SERVIÇOS OU FIANÇA: 6.600,00'},
+    {nivel:'Médio', artigo:'Art. P208', nome:'Conduta inadequada em público', pena:'10 SERVIÇOS OU FIANÇA: 7.500,00'},
+    {nivel:'Médio', artigo:'Art. P210', nome:'Uso excessivo de rádio/códigos errados', pena:'10 SERVIÇOS OU FIANÇA: 3.500,00'},
+    {nivel:'Médio', artigo:'Art. P211', nome:'Falta de decoro', pena:'16 SERVIÇOS OU FIANÇA: 7.600,00'},
+    {nivel:'Médio', artigo:'Art. P212', nome:'Utilização de armamento não autorizado', pena:'16 SERVIÇOS OU FIANÇA: 8.500,00'},
+    {nivel:'Médio', artigo:'Art. P214', nome:'Omissão de socorro / Negligência', pena:'20 SERVIÇOS OU FIANÇA: 12.600,00'},
+  ]
+};
+
+// Renderização dinâmica
+function renderCrimes(tipo, filtro='') {
+  const container = document.getElementById(tipo === 'normais' ? 'crimes-normais' : 'crimes-policiais');
+  container.innerHTML = '';
+  crimes[tipo].forEach(c => {
+    const texto = (c.artigo + c.nome + c.nivel).toLowerCase();
+    if (texto.includes(filtro.toLowerCase())) {
+      const div = document.createElement('div');
+      const classe = c.nivel.toLowerCase().includes('grav') ? 'gravissimo' :
+                     c.nivel.toLowerCase().includes('gra') ? 'grave' :
+                     c.nivel.toLowerCase().includes('méd') ? 'medio' : 'leve';
+      div.className = 'crime ' + classe;
+      div.innerHTML = `<div class="artigo">${c.artigo} — ${c.nome}</div>
+                       <div><strong>Nível:</strong> ${c.nivel} | <strong>Pena:</strong> ${c.pena}</div>`;
+      container.appendChild(div);
+    }
+  });
+}
+
+// Inicialização
+renderCrimes('normais');
+renderCrimes('policiais');
+
+// Alternar abas
+document.getElementById('btn-normais').addEventListener('click', () => {
+  document.getElementById('btn-normais').classList.add('active');
+  document.getElementById('btn-policiais').classList.remove('active');
+  document.getElementById('crimes-normais').classList.remove('hidden');
+  document.getElementById('crimes-policiais').classList.add('hidden');
+});
+
+document.getElementById('btn-policiais').addEventListener('click', () => {
+  document.getElementById('btn-policiais').classList.add('active');
+  document.getElementById('btn-normais').classList.remove('active');
+  document.getElementById('crimes-policiais').classList.remove('hidden');
+  document.getElementById('crimes-normais').classList.add('hidden');
+});
+
+// Filtro de busca
+document.getElementById('search').addEventListener('input', e => {
+  const filtro = e.target.value;
+  renderCrimes('normais', filtro);
+  renderCrimes('policiais', filtro);
+});
+</script>
+
+</body>
+</html>
